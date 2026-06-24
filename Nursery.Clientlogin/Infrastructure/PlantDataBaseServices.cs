@@ -1,7 +1,7 @@
 using Microsoft.Data.Sqlite;
 using Nursery.Clientlogin.Common;
 using Nursery.Clientlogin.PresentationLayer.Models.Plants;
-using Nusery.Clientlogin.PresentationLayer.Models.Plants;
+using Nursery.Clientlogin.PresentationLayer.Models.Plants;
 
 namespace Nursery.Clientlogin.Infrastructure
 {
@@ -16,7 +16,7 @@ namespace Nursery.Clientlogin.Infrastructure
                 Directory.CreateDirectory(DataPaths.DataDirectory);
             
             using var connection = new SqliteConnection(ConnectionString);
-            ConnectionString.Open();
+            connection.Open();
 
             var command = connection.CreateCommand();
             command.CommandText = @"
@@ -30,13 +30,13 @@ namespace Nursery.Clientlogin.Infrastructure
                 );
                 CREATE INDEX IF NOT EXISTS idx_plants_userid ON Plants(UserID);
             ";
-            command.ExecuterNonQuery();
+            command.ExecuteNonQuery();
         }
 
         public static void AddPlant(string userId, Plant plant)
         {
             using var connection = new SqliteConnection(ConnectionString);
-            conection.Open();
+            connection.Open();
 
             var command = connection.CreateCommand();
             command.CommandText = @"
@@ -49,7 +49,7 @@ namespace Nursery.Clientlogin.Infrastructure
             command.Parameters.AddWithValue("$lifeCycle", plant.LifeCycle.ToString());
             command.Parameters.AddWithValue("$flowering", plant.FloweringStatus ? 1 : 0);
 
-            command.ExecturNonQuery();
+            command.ExecuteNonQuery();
         }
 
         public static List<Plant> GetPlantsForUser(string userId)
