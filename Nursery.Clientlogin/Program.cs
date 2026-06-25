@@ -83,10 +83,18 @@ class Program
                     {
                         Plant plant = Plant.CreatePlant();
                         
-                        PlantDatabaseServices.AddPlant(currentUser.UserID, plant);
-                        plants.Add(plant);
-                        
-                        Console.WriteLine($"Added plant: {plant.Name}");
+                        bool added = PlantDatabaseServices.AddPlant(currentUser.UserID, plant);
+
+                        if (added)
+                        {
+                            plants.Add(plant);
+                            Console.WriteLine($"Added plant: {plant.Name}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"You already have {plant.Name} in your nursery");
+                        }
+
                         break;
                     }
                     
