@@ -9,9 +9,11 @@ class Program
 {
     static void Main()
     {
+        PlantDatabaseServices.Initialize();
+        
         Console.WriteLine("Welcome to the Virtual Nursery!");
         Console.WriteLine();
-        
+
         User? currentUser = null;
         
         //Auth loop
@@ -41,18 +43,18 @@ class Program
                         currentUser = user;
                     break;
                 }
-                
+
                 case "3":
                     Console.WriteLine("Goodbye!");
                     return;
                 
                 default:
-                    Console.WriteLine("Invalid option!");
+                    Console.WriteLine("Invalid option.");
                     continue;
             }
             
             Console.WriteLine();
-            
+
             if (currentUser == null)
             {
                 Console.WriteLine("Login failed. Returning to menu.");
@@ -63,7 +65,7 @@ class Program
             Console.WriteLine();
             
             //User nursery
-            List<Plant> plants = UserPlantDataServices.LoadPlants(currentUser.UserID);
+            List<Plant> plants = PlantDatabaseServices.GetPlantsForUser(currentUser.UserID);
 
             while (true)
             {
@@ -72,19 +74,27 @@ class Program
                 Console.WriteLine("2. View plants");
                 Console.WriteLine("3. Logout");
                 Console.Write("Choose an option: ");
-                
-                string plantChoice =  Console.ReadLine()?.TrimEnd() ?? "";
+
+                string plantChoice = Console.ReadLine()?.TrimEnd() ?? "";
 
                 switch (plantChoice)
                 {
                     case "1":
                     {
                         Plant plant = Plant.CreatePlant();
-                        plants.Add(plant);
                         
-                        UserPlantDataServices.SavePlants(currentUser.UserID, plants);
-                        
-                        Console.WriteLine($"Added plant: {plant.Name}");
+                        bool added = PlantDatabaseServices.AddPlant(currentUser.UserID, plant);
+
+                        if (added)
+                        {
+                            plants.Add(plant);
+                            Console.WriteLine($"Added plant: {plant.Name}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"You already have {plant.Name} in your nursery");
+                        }
+
                         break;
                     }
                     
@@ -95,7 +105,7 @@ class Program
                         }
                         else
                         {
-                            Console.WriteLine($"Plants in your nursery:");
+                            Console.WriteLine($"Plants in your nursery: ");
                             foreach (var p in plants)
                             {
                                 Console.WriteLine(
@@ -103,7 +113,7 @@ class Program
                                 );
                             }
                         }
-
+                        
                         break;
                     
                     case "3":
