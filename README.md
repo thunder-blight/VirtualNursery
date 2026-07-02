@@ -3,7 +3,6 @@ A multi-user virtual plant management application built with **C# and .NET 8**.
 
 VirtualNursery lets registered users build and manage a personal collection of plants through a RESTful HTTP API. The service layer is fully abstracted from the API surface, making the storage backend swappable without touching any endpoint code.
 
----
 
 ## Tech stack
 * **Language:** C# (.NET 8)
@@ -11,7 +10,6 @@ VirtualNursery lets registered users build and manage a personal collection of p
 * **Storage** JSON-file persistence (SQLite migration in progress)
 * **IDE** JetBrains Rider
 
----
 
 ## Features
 * **Multi-user plant collections** that accomodate for each user to maintain their own nursery
@@ -19,7 +17,6 @@ VirtualNursery lets registered users build and manage a personal collection of p
 * **Service layer abstraction** PlantsController won't require any changes when switching backends
 * **Normalised data model** the planned SQLite schema using a shared plant catalogue with a find-or-create pattern such that common plant names are never duplicated across users
 
----
 
 ## Project structure
 
@@ -38,9 +35,7 @@ VirtualNursery/
 ```
 The API project will depend on the core service layer but will not have any knowledge of how data is stored
 
----
 
-## API endpoints
 ## API endpoints
 
 | Method | Route | Description | Status |
@@ -51,7 +46,6 @@ The API project will depend on the core service layer but will not have any know
 
 > `DELETE` endpoint is on the roadmap.
 
----
 
 ## Database schema (planned)
 
@@ -66,7 +60,6 @@ UserNursery(UserId FK, PlantId FK, AddedAt, CustomNotes)  -- junction table
 
 **Find-or-freate pattern:** when a user adds a plant by name, the service checks the shared `Plants` catalogue first. If a matching entry exists its `PlantID` is reused; otherwise a new record is inserted. This keeps the catalogue normalised across all users while giving eac user an independent nursery record.
 
----
 
 ## Getting started
 
@@ -98,7 +91,6 @@ curl -X POST http://localhost:5000/api/plants \
   -d '{"userId": 1, "plantName": "Monstera"}'
 ```
 
----
 
 ## Roadmap
 
@@ -110,7 +102,6 @@ curl -X POST http://localhost:5000/api/plants \
 - [ ] Unit tests (xUnit) — service layer and controller validation
 - [ ] Docker support for local development
 
----
 
 ## License
 
