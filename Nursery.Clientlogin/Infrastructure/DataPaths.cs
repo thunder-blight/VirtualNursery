@@ -7,10 +7,7 @@ public static class DataPaths
 {
     public static readonly string DataDirectory =
         Path.Combine(AppContext.BaseDirectory, "Data");
-    
-    public static readonly string UsersFile =
-        Path.Combine(DataDirectory, "Users.json");
 
-    public static readonly string PlantsDbFile =
-        Path.Combine(DataDirectory, "plants.db");
+    public static readonly string NurseryDbFile =
+        Path.Combine(DataDirectory, "nursery.db");
 }

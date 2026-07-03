@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Nursery.Clientlogin.Models;
@@ -12,11 +10,7 @@ namespace Nursery.Clientlogin.Services
     {
         public static User Login(string username, string password)
         {
-            UserDataServices.Initialize();
-            var users =  UserDataServices.LoadUsers();
-            
-            var user = users.FirstOrDefault(u => 
-                u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            var user = UserDatabaseServices.GetUserByUsername(username);
             
             if (user == null)
                 throw new Exception("Wrong username or password!");
@@ -31,22 +25,16 @@ namespace Nursery.Clientlogin.Services
         
         public static User Register(string username, string password)
         {
-            UserDataServices.Initialize();
-            var users = UserDataServices.LoadUsers();
-
-            if (users.Any(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase)))
+            if (UserDatabaseServices.UsernameExists(username))
                 throw new Exception("Username already exists!");
             
             string hashedPassword = HashPassword(password);
             
-            var existingIds = users.Select(u => u.UserID);
+            var existingIds = UserDatabaseServices.GetAllUserIDs();
             string userID = UserIDGenerator.Generate(existingIds);
             
             var newUser = new User(userID, username, hashedPassword, UserType.Standard);
-            users.Add(newUser);
-            
-            UserDataServices.SaveUsers(users);
-            UserPlantDataServices.InitializeUserPlants(userID);
+            UserDatabaseServices.SaveUser(newUser);
             
             return newUser;
         }

@@ -25,13 +25,17 @@ public class Plant
     {
         Console.WriteLine("Enter plant name: ");
         string name = Console.ReadLine().Trim();
-        
+        return CreatePlant(name);
+    }
+
+    public static Plant CreatePlant(string name)
+    {
         Console.WriteLine("What type is it? (tree, shrub, herb, climber, creeper): ");
         PlantType plantType = Enum.Parse<PlantType>(
             Console.ReadLine().Trim(),
             ignoreCase: true
-            );
-        
+        );
+
         Console.WriteLine("What is its life cycle? (annual, biennial, perennial): ");
         LifeCycleType lifeCycle = Enum.Parse<LifeCycleType>(
             Console.ReadLine().Trim(),
@@ -51,7 +55,7 @@ public class Plant
             }
             if (input == "no" || input == "n")
             {
-                floweringStatus =  false;
+                floweringStatus = false;
                 break;
             }
             Console.WriteLine("Please enter yes or no.");
