@@ -7,35 +7,8 @@ namespace Nursery.Clientlogin.Infrastructure
     public static class PlantDatabaseServices
     {
         private static readonly string ConnectionString =
-            $"Data Source={DataPaths.PlantsDbFile}";
-
-        public static void Initialize()
-        {
-            if (!Directory.Exists(DataPaths.DataDirectory))
-                Directory.CreateDirectory(DataPaths.DataDirectory);
-            
-            using var connection = new SqliteConnection(ConnectionString);
-            connection.Open();
-
-            var command = connection.CreateCommand();
-            command.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Plant (
-                    PlantID         INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Name            TEXT    NOT NULL UNIQUE,
-                    Type            TEXT    NOT NULL CHECK (Type IN ('Tree','Shrub','Herb','Climber','Creeper')),
-                    LifeCycle       TEXT    NOT NULL CHECK (LifeCycle IN ('Annual','Biennial','Perennial')),
-                    FloweringStatus INTEGER NOT NULL DEFAULT 0 CHECK (FloweringStatus IN (0,1)) 
-                );
-
-                CREATE TABLE IF NOT EXISTS UserNursery (
-                    UserID  TEXT    NOT NULL,
-                    PlantID INTEGER NOT NULL,
-                    PRIMARY KEY (UserID, PlantID),
-                    FOREIGN KEY (PlantID) REFERENCES Plant(PlantID)
-                );
-            ";
-            command.ExecuteNonQuery();
-        }
+            $"Data Source={DataPaths.NurseryDbFile}";
+        
 
         private static int GetOrCreatePlantId(Plant plant)
         {
@@ -64,6 +37,48 @@ namespace Nursery.Clientlogin.Infrastructure
             return Convert.ToInt32(insert.ExecuteScalar());
         }
 
+        public static bool UserHasPlantByName(string userId, string plantName)
+        {
+            using var connection = new SqliteConnection(ConnectionString);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT COUNT(1)
+                FROM UserNursery un
+                JOIN Plant p ON un.PlantID = p.PlantID
+                WHERE un.UserID = $userId AND p.Name = $name;
+            ";
+            command.Parameters.AddWithValue("$userId", userId);
+            command.Parameters.AddWithValue("$name", plantName);
+            
+            return Convert.ToInt32(command.ExecuteScalar()) > 0;
+        }
+
+        public static Plant? GetPlantByName(string name)
+        {
+            using var connection = new SqliteConnection(ConnectionString);
+            connection.Open();
+            
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT Name, Type, LifeCycle, FloweringStatus
+                FROM Plant
+                WHERE Name = $name;
+            ";
+            command.Parameters.AddWithValue("$name", name);
+            
+            using var reader = command.ExecuteReader();
+            if (!reader.Read())
+                return null;
+            
+            var type = Enum.Parse<PlantType>(reader.GetString(1));
+            var lifeCycle = Enum.Parse<LifeCycleType>(reader.GetString(2));
+            bool flowering = reader.GetInt32(3) == 1;
+            
+            return new Plant(name, type, lifeCycle, flowering);
+        }
+        
         public static bool AddPlant(string userId, Plant plant)
         {
             int plantId = GetOrCreatePlantId(plant);

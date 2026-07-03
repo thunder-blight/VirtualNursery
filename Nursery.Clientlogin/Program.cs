@@ -9,7 +9,7 @@ class Program
 {
     static void Main()
     {
-        PlantDatabaseServices.Initialize();
+        DatabaseServices.Initialize();
         
         Console.WriteLine("Welcome to the Virtual Nursery!");
         Console.WriteLine();
@@ -81,20 +81,31 @@ class Program
                 {
                     case "1":
                     {
-                        Plant plant = Plant.CreatePlant();
+                        Console.Write("Enter plant name: ");
+                        string name = (Console.ReadLine() ?? "").TrimEnd();
                         
-                        bool added = PlantDatabaseServices.AddPlant(currentUser.UserID, plant);
-
-                        if (added)
+                        // Already in this user's nursery
+                        if (PlantDatabaseServices.UserHasPlantByName(currentUser.UserID, name))
                         {
-                            plants.Add(plant);
-                            Console.WriteLine($"Added plant: {plant.Name}");
+                            Console.WriteLine($"{name} is already in your nursery.");
+                            break;
                         }
-                        else
+                        
+                        // Exists in the catalog but user doesn't have it yet
+                        Plant? existingPlant = PlantDatabaseServices.GetPlantByName(name);
+                        if (existingPlant != null)
                         {
-                            Console.WriteLine($"You already have {plant.Name} in your nursery");
+                            Console.WriteLine($"{name} already exists in the database - adding it to your nursery.");
+                            PlantDatabaseServices.AddPlant(currentUser.UserID, existingPlant);
+                            plants.Add(existingPlant);
+                            break;
                         }
-
+                        
+                        // Brand new plant - ask for all details
+                        Plant plant = Plant.CreatePlant(name);
+                        PlantDatabaseServices.AddPlant(currentUser.UserID, plant);
+                        plants.Add(plant);
+                        Console.WriteLine($"Added {name} to your nursery.");
                         break;
                     }
                     
