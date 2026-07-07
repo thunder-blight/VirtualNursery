@@ -12,26 +12,47 @@ VirtualNursery lets registered users build and manage a personal collection of p
 
 
 ## Features
-* **Multi-user plant collections** that accomodate for each user to maintain their own nursery
-* **RESTful API**
-* **Service layer abstraction** PlantsController won't require any changes when switching backends
-* **Normalised data model** the planned SQLite schema using a shared plant catalogue with a find-or-create pattern such that common plant names are never duplicated across users
-
+* User registration with SHA-256 password hashing
+* User login with credential validation
+* Plant catalog — each unique plant name maps to exactly one PlantID
+* Per-user nursery via junction table
+* Duplicate detection — stops immediately if a plant is already in your nursery, reuses existing catalog data if another user registered it first
 
 ## Project structure
 
 ```
 VirtualNursery/
-├── VirtualNursery/               # Core domain — models and data services
+├── Nursery.Core/                     # Shared class library
+│   ├── Common/
+│   │   ├── LifeCycleType.cs
+│   │   ├── PlantType.cs
+│   │   └── UserType.cs
+│   ├── Infrastructure/
+│   │   ├── DataPaths.cs
+│   │   ├── DatabaseServices.cs
+│   │   ├── PlantDatabaseServices.cs
+│   │   ├── UserDatabaseServices.cs
+│   │   └── UserIDGenerator.cs
 │   ├── Models/
+│   │   ├── Plant.cs
+│   │   ├── User.cs
+│   │   └── UserSession.cs
+│   └── Nursery.Core.csproj
+├── Nursery.Clientlogin/              # Console client
+│   ├── PresentationLayer/
+│   │   └── Menus/
+│   │       ├── LoginMenu.cs
+│   │       └── PlantMenu.cs
 │   ├── Services/
-│   │   ├── UserDataServices.cs
-│   │   └── UserPlantDataServices.cs
-│   └── ...
-└── Nursery.Api/                  # ASP.NET Core Web API
-    ├── Controllers/
-    │   └── PlantsController.cs
-    └── Program.cs
+│   │   └── AuthServices.cs
+│   ├── Program.cs
+│   └── Nursery.Clientlogin.csproj
+├── Nursery.Api/                      # ASP.NET Core Web API (in progress)
+│   ├── Controllers/
+│   │   └── PlantsController.cs
+│   ├── Program.cs
+│   └── Nursery.Api.csproj
+└── Nursery.sln
 ```
 The API project will depend on the core service layer but will not have any knowledge of how data is stored
 
@@ -53,9 +74,9 @@ The SQLite migration will use three normalised tables:
 
 ```
 sql
-Users      (UserId PK, Username, PasswordHash, CreatedAt)
-Plants     (PlantId PK, CommonName, Species, Notes)       -- shared catalogue
-UserNursery(UserId FK, PlantId FK, AddedAt, CustomNotes)  -- junction table
+Users      (UserID PK, Username UNIQUE, PasswordHash, Role)
+Plant      (PlantID PK, Name UNIQUE, Type, LifeCycle, FloweringStatus)
+UserNursery(UserID FK, PlantID FK)  -- composite PK
 ```
 
 **Find-or-freate pattern:** when a user adds a plant by name, the service checks the shared `Plants` catalogue first. If a matching entry exists its `PlantID` is reused; otherwise a new record is inserted. This keeps the catalogue normalised across all users while giving eac user an independent nursery record.
@@ -94,14 +115,9 @@ curl -X POST http://localhost:5000/api/plants \
 
 ## Roadmap
 
-- [ ] Wire `PlantsController` to `PlantDatabaseServices` (SQLite)
-- [ ] `PUT /api/plants/{id}` — update plant details
-- [ ] `DELETE /api/plants/{id}` — remove a plant from a nursery
-- [ ] Swagger / OpenAPI documentation (Swashbuckle)
-- [ ] GitHub Actions CI — `dotnet build` + `dotnet test` on push
-- [ ] Unit tests (xUnit) — service layer and controller validation
-- [ ] Docker support for local development
-
+- [ ] REST API endpoints via `Nursery.Api`
+- [ ] JWT authentication
+- [ ] Admin role functionality
 
 ## License
 
