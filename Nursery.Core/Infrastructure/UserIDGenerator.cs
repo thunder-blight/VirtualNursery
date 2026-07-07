@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Nursery.Clientlogin.Infrastructure;
+namespace Nursery.Core.Infrastructure;
 
 public class UserIDGenerator
 {

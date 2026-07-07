@@ -1,4 +1,4 @@
-namespace Nursery.Clientlogin.Common;
+namespace Nursery.Core.Common;
 
 public enum PlantType
 {

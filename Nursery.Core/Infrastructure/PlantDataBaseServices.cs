@@ -1,8 +1,8 @@
 using Microsoft.Data.Sqlite;
-using Nursery.Clientlogin.Common;
-using Nursery.Clientlogin.PresentationLayer.Models.Plants;
+using Nursery.Core.Common;
+using Nursery.Core.Models;
 
-namespace Nursery.Clientlogin.Infrastructure
+namespace Nursery.Core.Infrastructure
 {
     public static class PlantDatabaseServices
     {
