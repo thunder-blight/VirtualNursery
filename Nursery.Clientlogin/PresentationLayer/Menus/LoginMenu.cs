@@ -1,4 +1,4 @@
-using Nursery.Clientlogin.Models;
+using Nursery.Core.Models;
 using Nursery.Clientlogin.Services;
 
 namespace  Nursery.Clientlogin.PresentationLayer.Menus

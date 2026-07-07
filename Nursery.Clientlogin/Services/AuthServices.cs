@@ -1,8 +1,8 @@
 using System.Security.Cryptography;
 using System.Text;
-using Nursery.Clientlogin.Models;
-using Nursery.Clientlogin.Common;
-using Nursery.Clientlogin.Infrastructure;
+using Nursery.Core.Models;
+using Nursery.Core.Common;
+using Nursery.Core.Infrastructure;
 
 namespace Nursery.Clientlogin.Services
 {

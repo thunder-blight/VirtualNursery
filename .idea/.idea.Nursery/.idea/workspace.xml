@@ -10,18 +10,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12e9272d-f88b-4108-9bf7-db1fd5e09c54" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/DatabaseServices.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/UserDatabaseServices.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Nursery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Nursery/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/DataPaths.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/DataPaths.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/PlantDataBaseServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/PlantDataBaseServices.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/UserDataServices.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/UserPlantDataServices.cs" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nursery.Clientlogin/PresentationLayer/Menus/PlantMenu.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Common/LifeCycleType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Core/Common/LifeCycleType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Common/PlantType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Core/Common/PlantType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Common/UserType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Core/Common/UserType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/DataPaths.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Core/Infrastructure/DataPaths.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/DatabaseServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Core/Infrastructure/DatabaseServices.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/PlantDataBaseServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Core/Infrastructure/PlantDataBaseServices.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/UserDatabaseServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Core/Infrastructure/UserDatabaseServices.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/UserIDGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Core/Infrastructure/UserIDGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Models/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Core/Models/User.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Models/UserSession.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Core/Models/UserSession.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Nursery.Clientlogin.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Clientlogin/Nursery.Clientlogin.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/PresentationLayer/Models/Plants/Plant.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Clientlogin/PresentationLayer/Models/Plants/Plant.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/PresentationLayer/Menus/LoginMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Clientlogin/PresentationLayer/Menus/LoginMenu.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/PresentationLayer/Models/Plants/Plant.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Core/Models/Plant.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Clientlogin/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/Services/AuthServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.Clientlogin/Services/AuthServices.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nursery.Clientlogin/data/users.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nursery.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Nursery.sln" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,11 +36,18 @@
   <component name="DpaMonitoringSettings">
     <option name="firstShow" value="false" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="XML File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="user-database" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -54,8 +66,8 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Nursery.Api/Controllers/PlantsController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/DatabaseServices.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Nursery.Clientlogin/Infrastructure/UserDatabaseServices.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Nursery.Clientlogin/PresentationLayer/Menus/PlantMenu.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Nursery.Core/Class1.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="McpProjectServerCommands">
     <commands />
@@ -83,7 +95,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "user-database",
+    "git-widget-placeholder": "database-separation",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -157,7 +169,7 @@
       <workItem from="1782281229463" duration="2928000" />
       <workItem from="1782284755248" duration="37542000" />
       <workItem from="1782688445298" duration="31019000" />
-      <workItem from="1782966647890" duration="22551000" />
+      <workItem from="1782966647890" duration="40761000" />
     </task>
     <task id="LOCAL-00001" summary="Implemented SQLite and created a master plant database in PlantDataBaseServices.cs, set up to work towards creating plant ID system and plant verification/consistency in database.">
       <option name="closed" value="true" />
@@ -199,7 +211,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782974193769</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Migrated user information to SQLite, implemented consistency between users and their plants.">
+      <option name="closed" value="true" />
+      <created>1783057726592</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1783057726592</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -214,7 +234,8 @@
     <MESSAGE value="Added in logic to enforce consistency; no two plants with the same name but different information can exist. Cleaned up some small errors" />
     <MESSAGE value="Began work on an API" />
     <MESSAGE value="Created an PlantsController that allows for fetching by ID, listing plant details and adding plant details." />
-    <option name="LAST_COMMIT_MESSAGE" value="Created an PlantsController that allows for fetching by ID, listing plant details and adding plant details." />
+    <MESSAGE value="Migrated user information to SQLite, implemented consistency between users and their plants." />
+    <option name="LAST_COMMIT_MESSAGE" value="Migrated user information to SQLite, implemented consistency between users and their plants." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

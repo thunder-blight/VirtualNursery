@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Nursery.Clientlogin.Infrastructure;
+namespace Nursery.Core.Infrastructure;
 
 public static class DataPaths
 {

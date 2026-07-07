@@ -1,6 +1,6 @@
-using Nursery.Clientlogin.Common;
+using Nursery.Core.Common;
 
-namespace Nursery.Clientlogin.PresentationLayer.Models.Plants;
+namespace Nursery.Core.Models;
 
 public class Plant
 {
