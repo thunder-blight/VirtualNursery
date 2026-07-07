@@ -127,5 +127,47 @@ namespace Nursery.Core.Infrastructure
 
             return plants;
         }
+        
+        public static List<Plant> GetAllPlants()
+        {
+            var plants = new List<Plant>();
+
+            using var connection = new SqliteConnection(ConnectionString);
+            connection.Open();
+            
+            var command = connection.CreateCommand();
+            command.CommandText = "SELECT Name, Type, LifeCycle, FloweringStatus FROM Plant";
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                string name = reader.GetString(0);
+                var type = Enum.Parse<PlantType>(reader.GetString(1));
+                var lifeCycle = Enum.Parse<LifeCycleType>(reader.GetString(2));
+                bool flowering = reader.GetInt32(3) == 1;
+                
+                plants.Add(new Plant(name, type, lifeCycle, flowering));
+            }
+            
+            return plants;
+        }
+
+        public static bool RemovePlant(string userId, string plantName)
+        {
+            using var connection = new SqliteConnection(ConnectionString);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+                DELETE From UserNursery
+                WHERE UserID = $userId
+                AND PlantID = (SELECT PlantID FROM Plant WHERE Name = $name);
+            ";
+            command.Parameters.AddWithValue("$userId", userId);
+            command.Parameters.AddWithValue("$name", plantName);
+            
+            int rowsAffected = command.ExecuteNonQuery();
+            return rowsAffected > 0;
+        }
     }
 }
