@@ -1,7 +1,8 @@
+using Nursery.Core.Infrastructure;
 using Nursery.Core.Models;
 using Nursery.Clientlogin.Services;
 
-namespace  Nursery.Clientlogin.PresentationLayer.Menus
+namespace Nursery.Clientlogin.PresentationLayer.Menus
 {
     public static class LoginMenu
     {
@@ -19,7 +20,6 @@ namespace  Nursery.Clientlogin.PresentationLayer.Menus
                 Console.WriteLine($"User '{user.Username}' successfully logged in.");
                 return user;
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine($"Login failed: {ex.Message}");
@@ -32,6 +32,12 @@ namespace  Nursery.Clientlogin.PresentationLayer.Menus
             Console.WriteLine("=== Register New User ===");
             Console.WriteLine("Enter username: ");
             string username = Console.ReadLine()?.Trim() ?? "";
+
+            if (UserDatabaseServices.UsernameExists(username))
+            {
+                Console.WriteLine($"Username '{username}' is already taken.");
+                return null;
+            }
 
             string password;
             string confirmPassword;
@@ -53,16 +59,14 @@ namespace  Nursery.Clientlogin.PresentationLayer.Menus
             try
             {
                 User user = AuthServices.Register(username, password);
-                Console.WriteLine($"User '{user.Username}' successfully registered.!");
+                Console.WriteLine($"User '{user.Username}' successfully registered!");
                 return user;
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
                 return null;
             }
-
         }
     }
 }
