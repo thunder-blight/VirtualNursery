@@ -1,7 +1,7 @@
 using Nursery.Core.Infrastructure;
 using System.Text.Json.Serialization;
 
-var  builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
