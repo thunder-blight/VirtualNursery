@@ -145,6 +145,11 @@
         <option name="Build" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue=".NET Launch Settings Profile.Nursery.Api: https" />
+      <item itemvalue=".NET Launch Settings Profile.Nursery.Api: http" />
+      <item itemvalue=".NET Project.Nursery.Clientlogin" />
+    </list>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

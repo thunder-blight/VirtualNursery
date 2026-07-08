@@ -1,5 +1,6 @@
 ﻿using Nursery.Core.Infrastructure;
 using Nursery.Core.Models;
+using Nursery.Clientlogin.Infrastructure;
 using Nursery.Clientlogin.PresentationLayer.Menus;
 using Nursery.Clientlogin.Services;
 
@@ -19,8 +20,8 @@ class Program
             Console.WriteLine("1. Register");
             Console.WriteLine("2. Login");
             Console.WriteLine("3. Exit");
-            Console.Write("Choose an option: ");
-
+            Console.WriteLine("Choose an option: ");
+            
             string loginChoice = Console.ReadLine()?.TrimEnd() ?? "";
 
             switch (loginChoice)
@@ -32,6 +33,7 @@ class Program
                         currentUser = user;
                     break;
                 }
+
                 case "2":
                 {
                     var user = LoginMenu.LoginUser();
@@ -39,18 +41,24 @@ class Program
                         currentUser = user;
                     break;
                 }
+
                 case "3":
+                {
                     Console.WriteLine("Goodbye!");
                     return;
+                }
+
                 default:
-                    Console.WriteLine("Invalid option!");
+                {
+                    Console.WriteLine("Invalid option.");
                     continue;
+                }
             }
-
+            
             Console.WriteLine();
-
+            
             if (currentUser == null)
-            {
+                {
                 Console.WriteLine("Login failed. Returning to menu.");
                 continue;
             }
@@ -58,7 +66,7 @@ class Program
             Console.WriteLine($"Logged in as: {currentUser.Username}");
             Console.WriteLine();
 
-            List<Plant> plants = PlantDatabaseServices.GetPlantsForUser(currentUser.UserID);
+            List<Plant> plants = NurseryApiClient.GetPlantsForUser(currentUser.UserID);
 
             while (true)
             {
@@ -77,23 +85,23 @@ class Program
                         Console.Write("Enter plant name: ");
                         string name = (Console.ReadLine() ?? "").Trim();
 
-                        if (PlantDatabaseServices.UserHasPlantByName(currentUser.UserID, name))
+                        if (plants.Any(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
                         {
                             Console.WriteLine($"{name} is already in your nursery.");
                             break;
                         }
 
-                        Plant? existingPlant = PlantDatabaseServices.GetPlantByName(name);
+                        Plant? existingPlant = NurseryApiClient.GetPlantByName(name);
                         if (existingPlant != null)
                         {
                             Console.WriteLine($"{name} already exists in the database — adding it to your nursery with existing information.");
-                            PlantDatabaseServices.AddPlant(currentUser.UserID, existingPlant);
+                            NurseryApiClient.AddPlant(currentUser.UserID, existingPlant);
                             plants.Add(existingPlant);
                             break;
                         }
 
                         Plant plant = PlantMenu.CreatePlant(name);
-                        PlantDatabaseServices.AddPlant(currentUser.UserID, plant);
+                        NurseryApiClient.AddPlant(currentUser.UserID, plant);
                         plants.Add(plant);
                         Console.WriteLine($"Added {plant.Name} to your nursery.");
                         break;
