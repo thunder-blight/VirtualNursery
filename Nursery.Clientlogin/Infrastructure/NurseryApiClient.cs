@@ -7,7 +7,7 @@ namespace Nursery.Clientlogin.Infrastructure;
 
 public static class NurseryApiClient
 {
-    private const string BaseUrl = "http://localhost:5274";
+    private const string BaseUrl = "https://localhost:7288";
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
