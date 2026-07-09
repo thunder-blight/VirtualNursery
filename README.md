@@ -2,16 +2,18 @@
 
 A multi-user virtual plant management application built with **C# and .NET 8**.
 
-VirtualNursery lets registered users build and manage a personal collection of plants through a console client backed by a RESTful API. The shared `Nursery.Core` library separates all storage and domain logic from both the CLI and API surface, keeping each layer independent.
+VirtualNursery lets registered users build and manage a personal collection of plants through a console client and React web frontend, both backed by a RESTful API. The shared `Nursery.Core` library separates all storage and domain logic from the CLI, API, and frontend, keeping each layer independent.
 
 ## Tech Stack
 
 - **Language:** C# / .NET 8
 - **API framework:** ASP.NET Core Web API
 - **Database:** SQLite via `Microsoft.Data.Sqlite`
-- **IDE:** JetBrains Rider
+- **Frontend:** React 19 + Vite
+- **IDE:** JetBrains Rider / VS Code
 
 ## Project Structure
+
 ```
 VirtualNursery/
 ├── Nursery.Core/                     # Shared class library
@@ -46,6 +48,13 @@ VirtualNursery/
 │   │   └── PlantsController.cs
 │   ├── Program.cs
 │   └── Nursery.Api.csproj
+├── Nursery.Web/                      # React frontend
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   └── main.jsx
+│   ├── index.html
+│   └── package.json
 ├── data/
 │   └── nursery.db                    # Shared SQLite database
 └── Nursery.sln
@@ -61,6 +70,7 @@ VirtualNursery/
 - Duplicate plant detection — stops immediately if a plant is already in your nursery; reuses existing catalog data if another user registered it first
 - Console client routes all plant operations through the REST API — `Nursery.Api` is the single point of access to the database
 - Input validation on plant type and life cycle — reprompts on invalid input instead of crashing
+- React frontend displays the full plant catalog fetched live from the API
 
 ## Database Schema
 
@@ -89,14 +99,15 @@ UserNursery(UserID FK, PlantID FK)  -- composite PK
 ### Prerequisites
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) or later
+- [Node.js](https://nodejs.org) v18 or later
 - A trusted HTTPS dev certificate:
 ```bash
-  dotnet dev-certs https --trust
+dotnet dev-certs https --trust
 ```
 
 ### Run Locally
 
-Both `Nursery.Api` and `Nursery.Clientlogin` need to run simultaneously — the console client communicates with the API over HTTP.
+`Nursery.Api` must be running before starting either the console client or the React frontend.
 
 ```bash
 git clone https://github.com/thunder-blight/VirtualNursery.git
@@ -108,12 +119,20 @@ dotnet restore
 ```bash
 dotnet run --project Nursery.Api
 ```
-The API starts at `https://localhost:7288` and Swagger UI is available at `https://localhost:7288/swagger`.
+The API starts at `https://localhost:7288`. Swagger UI is available at `https://localhost:7288/swagger`.
 
 **Terminal 2 — start the console client:**
 ```bash
 dotnet run --project Nursery.Clientlogin
 ```
+
+**Terminal 3 — start the React frontend:**
+```bash
+cd Nursery.Web
+npm install
+npm run dev
+```
+The frontend is available at `http://localhost:5173`.
 
 ### Quick Test via curl
 
@@ -138,6 +157,8 @@ curl -X DELETE https://localhost:7288/api/plants/nursery/{userId}/Monstera
 - [x] SQLite database with normalised schema
 - [x] Console client backed by REST API
 - [x] CRUD-complete plant endpoints
+- [x] React frontend displaying the plant catalog
+- [ ] Per-user view in the React frontend
 - [ ] JWT authentication
 - [ ] Admin role functionality
 - [ ] Users API endpoints
