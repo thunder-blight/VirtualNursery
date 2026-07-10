@@ -9,11 +9,10 @@ VirtualNursery lets registered users build and manage a personal collection of p
 - **Language:** C# / .NET 8
 - **API framework:** ASP.NET Core Web API
 - **Database:** SQLite via `Microsoft.Data.Sqlite`
-- **Frontend:** React 19 + Vite
+- **Frontend:** React 19 + Vite + TypeScript
 - **IDE:** JetBrains Rider / VS Code
 
 ## Project Structure
-
 ```
 VirtualNursery/
 ├── Nursery.Core/                     # Shared class library
@@ -48,12 +47,14 @@ VirtualNursery/
 │   │   └── PlantsController.cs
 │   ├── Program.cs
 │   └── Nursery.Api.csproj
-├── Nursery.Web/                      # React frontend
+├── Nursery.Web/                      # React + TypeScript frontend
 │   ├── src/
-│   │   ├── App.jsx
+│   │   ├── App.tsx
 │   │   ├── App.css
-│   │   └── main.jsx
+│   │   ├── main.tsx
+│   │   └── vite-env.d.ts
 │   ├── index.html
+│   ├── tsconfig.json
 │   └── package.json
 ├── data/
 │   └── nursery.db                    # Shared SQLite database
@@ -70,7 +71,7 @@ VirtualNursery/
 - Duplicate plant detection — stops immediately if a plant is already in your nursery; reuses existing catalog data if another user registered it first
 - Console client routes all plant operations through the REST API — `Nursery.Api` is the single point of access to the database
 - Input validation on plant type and life cycle — reprompts on invalid input instead of crashing
-- React frontend displays the full plant catalog fetched live from the API
+- React + TypeScript frontend displays the full plant catalog fetched live from the API
 
 ## Database Schema
 
@@ -157,8 +158,10 @@ curl -X DELETE https://localhost:7288/api/plants/nursery/{userId}/Monstera
 - [x] SQLite database with normalised schema
 - [x] Console client backed by REST API
 - [x] CRUD-complete plant endpoints
-- [x] React frontend displaying the plant catalog
-- [ ] Per-user view in the React frontend
+- [x] React + TypeScript frontend displaying the plant catalog
+- [ ] Plant detail page with URL routing (`/plants/:name`)
+- [ ] Responsive CSS for mobile and smaller screens
+- [ ] Per-user nursery view in the React frontend
 - [ ] JWT authentication
 - [ ] Admin role functionality
 - [ ] Users API endpoints
