@@ -9,7 +9,6 @@ namespace Nursery.Api.Controllers;
 public class PlantsController : ControllerBase
 {
     // GET /api/plants
-    // Returns the full plant catalog
     [HttpGet]
     public ActionResult<IEnumerable<Plant>> GetAll()
     {
@@ -17,17 +16,23 @@ public class PlantsController : ControllerBase
         return Ok(plants);
     }
 
-    // GET /api/plants/{name}
-    // Returns a specific plant from the catalog by name
-    [HttpGet("{name}")]
+    // GET /api/plants/name/{name}
+    [HttpGet("name/{name}")]
     public ActionResult<Plant> GetByName(string name)
     {
         var plant = PlantDatabaseServices.GetPlantByName(name);
         return plant is null ? NotFound() : Ok(plant);
     }
 
+    // GET /api/plants/id/{plantId}
+    [HttpGet("id/{plantId}")]
+    public ActionResult<Plant> GetById(int plantId)
+    {
+        var plant = PlantDatabaseServices.GetPlantById(plantId);
+        return plant is null ? NotFound() : Ok(plant);
+    }
+
     // GET /api/plants/nursery/{userId}
-    // Returns all plants belonging to a specific user
     [HttpGet("nursery/{userId}")]
     public ActionResult<IEnumerable<Plant>> GetByUser(string userId)
     {
@@ -36,7 +41,6 @@ public class PlantsController : ControllerBase
     }
 
     // POST /api/plants/nursery/{userId}
-    // Adds a plant to a user's nursery (find-or-create in catalog)
     [HttpPost("nursery/{userId}")]
     public ActionResult AddToNursery(string userId, [FromBody] Plant plant)
     {
@@ -51,11 +55,10 @@ public class PlantsController : ControllerBase
         }
 
         PlantDatabaseServices.AddPlant(userId, plant);
-        return Created($"/api/plants/{plant.Name}", plant);
+        return Created($"/api/plants/id/{plant.PlantID}", plant);
     }
 
     // DELETE /api/plants/nursery/{userId}/{plantName}
-    // Removes a plant from a user's nursery (plant stays in catalog)
     [HttpDelete("nursery/{userId}/{plantName}")]
     public ActionResult RemoveFromNursery(string userId, string plantName)
     {

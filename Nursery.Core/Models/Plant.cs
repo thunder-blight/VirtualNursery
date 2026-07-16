@@ -4,6 +4,7 @@ namespace Nursery.Core.Models;
 
 public class Plant
 {
+    public int PlantID { get; set; }
     public string Name { get; set; }
     public PlantType Type { get; set; }
     public LifeCycleType LifeCycle { get; set; }

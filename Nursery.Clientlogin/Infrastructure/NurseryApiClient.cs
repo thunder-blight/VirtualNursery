@@ -34,7 +34,7 @@ public static class NurseryApiClient
     public static Plant? GetPlantByName(string name)
     {
         var response = HttpClient
-            .GetAsync($"{BaseUrl}/api/plants/{name}")
+            .GetAsync($"{BaseUrl}/api/plants/name/{name}")
             .GetAwaiter().GetResult();
 
         if (!response.IsSuccessStatusCode)
