@@ -77,7 +77,8 @@ public class PlantsController : ControllerBase
         bool removed = PlantDatabaseServices.RemovePlant(userId, plantName);
         return removed ? NoContent() : NotFound($"{plantName} was not found in this user's nursery.");
     }
-
+    
+    // POST /api/plants/id/{plantId}
     [HttpPost]
     public ActionResult<Plant> CreatePlant([FromBody] Plant plant)
     {
@@ -85,5 +86,17 @@ public class PlantsController : ControllerBase
         if (created is null)
             return Conflict($"Aplant named '{plant.Name}' already exists.");
         return Created($"/api/plants/id/{created.PlantID}", created);
+    }
+    
+    // DELETE /api/plants/id/{plantId}
+    [HttpDelete("id/{plantId}")]
+    public ActionResult DeletePlant(int plantId)
+    {
+        var existing = PlantDatabaseServices.GetPlantById(plantId);
+        if (existing is null)
+            return NotFound($"Plant with ID {plantId} not found.");
+        
+        bool deleted = PlantDatabaseServices.DeletePlant(plantId);
+        return deleted ? NoContent() : StatusCode(500, "Failed to delete plant.");
     }
 }

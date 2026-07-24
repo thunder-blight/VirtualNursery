@@ -245,4 +245,37 @@ public static class PlantDatabaseServices
         plant.PlantID = newId;
         return plant;
     }
+
+    public static bool DeletePlant(int plantId)
+    {
+        using var connection = new SqliteConnection(ConnectionString);
+        connection.Open();
+
+        using var transaction = connection.BeginTransaction();
+
+        try
+        {
+            //Remove all user nursery links first
+            var deleteLinks = connection.CreateCommand();
+            deleteLinks.Transaction = transaction;
+            deleteLinks.CommandText = "DELETE FROM UserNursery WHERE PlantID = $plantId;";
+            deleteLinks.Parameters.AddWithValue("$plantId", plantId);
+            deleteLinks.ExecuteNonQuery();
+
+            // Then remove from catalog
+            var deletePlant = connection.CreateCommand();
+            deletePlant.Transaction = transaction;
+            deletePlant.CommandText = "DELETE FROM Plant WHERE PlantID = $plantId;";
+            deletePlant.Parameters.AddWithValue("$plantId", plantId);
+            int rowsAffected = deletePlant.ExecuteNonQuery();
+
+            transaction.Commit();
+            return rowsAffected > 0;
+        }
+        catch
+        {
+            transaction.Rollback();
+            throw;
+        }
+    }
 }
