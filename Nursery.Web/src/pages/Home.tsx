@@ -36,8 +36,15 @@ function Home() {
   return (
     <div className="app">
       <header>
-        <h1>🌿 Virtual Nursery</h1>
-        <p className="subtitle">{plants.length} plants in the catalog</p>
+        <div className="header-top">
+          <div>
+            <h1>🌿 Virtual Nursery</h1>
+            <p className="subtitle">{plants.length} plants in the catalog</p>
+          </div>
+          <button className="create-button" onClick={() => navigate("/plant/new")}>
+            + Add Plant
+          </button>
+        </div>
       </header>
       <div className="search-bar">
         <input

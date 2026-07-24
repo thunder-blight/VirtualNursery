@@ -123,6 +123,26 @@ public static class PlantDatabaseServices
         return rowsAffected > 0;
     }
 
+    public static bool UpdatePlant(int plantId, Plant plant)
+    {
+        using var connection = new SqliteConnection(ConnectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = @"
+            UPDATE Plant
+            SET Type = $type, LifeCycle = $lifeCycle, FloweringStatus = $flowering
+            WHERE PlantID = $plantId;
+        ";
+        command.Parameters.AddWithValue("$type", plant.Type.ToString());
+        command.Parameters.AddWithValue("$lifeCycle", plant.LifeCycle.ToString());
+        command.Parameters.AddWithValue("$flowering", plant.FloweringStatus ? 1 : 0);
+        command.Parameters.AddWithValue("$plantId", plantId);
+        
+        int rowsAffected = command.ExecuteNonQuery();
+        return rowsAffected > 0;
+    }
+
     public static bool RemovePlant(string userId, string plantName)
     {
         using var connection = new SqliteConnection(ConnectionString);
@@ -193,5 +213,36 @@ public static class PlantDatabaseServices
         }
 
         return plants;
+    }
+
+    public static Plant? CreatePlant(Plant plant)
+    {
+        using var connection = new SqliteConnection(ConnectionString);
+        connection.Open();
+
+        var check = connection.CreateCommand();
+        check.CommandText = "SELECT PlantID FROM Plant WHERE Name = $name;";
+        check.Parameters.AddWithValue("$name", plant.Name);
+
+        var existing = check.ExecuteScalar();
+        if (existing != null) return null;
+
+        var insert = connection.CreateCommand();
+        insert.CommandText = @"
+        INSERT INTO Plant (Name, Type, LifeCycle, FloweringStatus)
+        VALUES ($name, $type, $lifeCycle, $flowering);
+    ";
+        insert.Parameters.AddWithValue("$name", plant.Name);
+        insert.Parameters.AddWithValue("$type", plant.Type.ToString());
+        insert.Parameters.AddWithValue("$lifeCycle", plant.LifeCycle.ToString());
+        insert.Parameters.AddWithValue("$flowering", plant.FloweringStatus ? 1 : 0);
+        insert.ExecuteNonQuery();
+
+        var lastId = connection.CreateCommand();
+        lastId.CommandText = "SELECT last_insert_rowid();";
+        int newId = Convert.ToInt32(lastId.ExecuteScalar());
+
+        plant.PlantID = newId;
+        return plant;
     }
 }

@@ -202,3 +202,143 @@ h1 {
 .search-clear:hover {
   color: #2d2d2d;
 }
+
+/* Detail page header */
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.detail-card h1 {
+  font-size: 1.6rem;
+  color: #2d6a4f;
+  margin-bottom: 0;
+}
+
+/* Edit button */
+.edit-button {
+  background: none;
+  border: 1px solid #2d6a4f;
+  color: #2d6a4f;
+  font-size: 0.85rem;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, colour 0.15s ease;
+}
+
+.edit-button:hover {
+  background: #2d6a4f;
+  color: white;
+}
+
+/* Dropdowns */
+.detail-select {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  background: white;
+  outline: none;
+  cursor: pointer;
+}
+
+.detail-select:focus {
+  border-color: #2d6a4f;
+}
+
+/* Save/Cancel actions */
+.edit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.save-button {
+  background: #2d6a4f;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.save-button:hover:not(:disabled) {
+  opacity: 0.85s;
+}
+
+.save-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancel-button {
+  background: none;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.cancel-button:hover:not(:disabled) {
+  border-color: #9ca3af;
+}
+
+.cancel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* Header top row */
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Create button */
+.create-button {
+  background: #2d6a4f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.create-button:hover {
+  opacity: 0.85;
+}
+
+/* Name input on create page */
+.detail-input {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  background: white;
+  outline: none;
+  width: 180px;
+}
+
+.detail-input:focus {
+  border-color: #2d6a4f;
+}
+
+/* Inline form error */
+.form-error {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}

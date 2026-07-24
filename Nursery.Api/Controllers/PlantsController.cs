@@ -57,6 +57,18 @@ public class PlantsController : ControllerBase
         PlantDatabaseServices.AddPlant(userId, plant);
         return Created($"/api/plants/id/{plant.PlantID}", plant);
     }
+    
+    // PUT /api/plants/id/{plantId}
+    [HttpPut("id/{plantId}")]
+    public ActionResult UpdatePlant(int plantId, [FromBody] Plant plant)
+    {
+        var existing = PlantDatabaseServices.GetPlantById(plantId);
+        if (existing is null)
+            return NotFound($"Plant with ID {plantId} not found.");
+        
+        bool updated = PlantDatabaseServices.UpdatePlant(plantId, plant);
+        return updated ? Ok(plant) : StatusCode(500, "Failed to update plant.");
+    }
 
     // DELETE /api/plants/nursery/{userId}/{plantName}
     [HttpDelete("nursery/{userId}/{plantName}")]
@@ -64,5 +76,14 @@ public class PlantsController : ControllerBase
     {
         bool removed = PlantDatabaseServices.RemovePlant(userId, plantName);
         return removed ? NoContent() : NotFound($"{plantName} was not found in this user's nursery.");
+    }
+
+    [HttpPost]
+    public ActionResult<Plant> CreatePlant([FromBody] Plant plant)
+    {
+        var created = PlantDatabaseServices.CreatePlant(plant);
+        if (created is null)
+            return Conflict($"Aplant named '{plant.Name}' already exists.");
+        return Created($"/api/plants/id/{created.PlantID}", created);
     }
 }
