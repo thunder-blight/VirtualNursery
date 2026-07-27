@@ -13,54 +13,64 @@ VirtualNursery lets registered users build and manage a personal collection of p
 - **IDE:** JetBrains Rider / VS Code
 
 ## Project Structure
+
 ```
 VirtualNursery/
-├── Nursery.Core/                     # Shared class library
-│   ├── Common/
-│   │   ├── LifeCycleType.cs
-│   │   ├── PlantType.cs
-│   │   └── UserType.cs
-│   ├── Infrastructure/
-│   │   ├── DataPaths.cs
-│   │   ├── DatabaseServices.cs
-│   │   ├── PlantDatabaseServices.cs
-│   │   ├── UserDatabaseServices.cs
-│   │   └── UserIDGenerator.cs
-│   ├── Models/
-│   │   ├── Plant.cs
-│   │   ├── User.cs
-│   │   └── UserSession.cs
-│   └── Nursery.Core.csproj
-├── Nursery.Clientlogin/              # Console client
-│   ├── Infrastructure/
-│   │   └── NurseryApiClient.cs
-│   ├── PresentationLayer/
-│   │   └── Menus/
-│   │       ├── LoginMenu.cs
-│   │       └── PlantMenu.cs
-│   ├── Services/
-│   │   └── AuthServices.cs
-│   ├── Program.cs
-│   └── Nursery.Clientlogin.csproj
-├── Nursery.Api/                      # ASP.NET Core Web API
-│   ├── Controllers/
-│   │   └── PlantsController.cs
-│   ├── Program.cs
-│   └── Nursery.Api.csproj
-├── Nursery.Web/                      # React + TypeScript frontend
-│   ├── src/
-│   │   ├── App.tsx
-│   │   ├── App.css
-│   │   ├── main.tsx
-│   │   └── vite-env.d.ts
-│   ├── index.html
-│   ├── tsconfig.json
-│   └── package.json
+├── Nursery.Core/ # Shared class library
+│ ├── Common/
+│ │ ├── LifeCycleType.cs
+│ │ ├── PlantType.cs
+│ │ └── UserType.cs
+│ ├── Infrastructure/
+│ │ ├── DataPaths.cs
+│ │ ├── DatabaseServices.cs
+│ │ ├── PlantDatabaseServices.cs
+│ │ ├── UserDatabaseServices.cs
+│ │ └── UserIDGenerator.cs
+│ ├── Models/
+│ │ ├── Plant.cs
+│ │ ├── User.cs
+│ │ └── UserSession.cs
+│ └── Nursery.Core.csproj
+├── Nursery.Clientlogin/ # Console client
+│ ├── Infrastructure/
+│ │ └── NurseryApiClient.cs
+│ ├── PresentationLayer/
+│ │ └── Menus/
+│ │ ├── LoginMenu.cs
+│ │ └── PlantMenu.cs
+│ ├── Services/
+│ │ └── AuthServices.cs
+│ ├── Program.cs
+│ └── Nursery.Clientlogin.csproj
+├── Nursery.Api/ # ASP.NET Core Web API
+│ ├── Controllers/
+│ │ ├── OptionsController.cs
+│ │ └── PlantsController.cs
+│ ├── Program.cs
+│ └── Nursery.Api.csproj
+├── Nursery.Web/ # React + TypeScript frontend
+│ ├── src/
+│ │ ├── components/
+│ │ │ └── PlantForm.tsx
+│ │ ├── pages/
+│ │ │ ├── CreatePlant.tsx
+│ │ │ ├── Home.tsx
+│ │ │ └── PlantDetail.tsx
+│ │ ├── types/
+│ │ │ ├── Options.ts
+│ │ │ └── Plant.ts
+│ │ ├── App.tsx
+│ │ ├── App.css
+│ │ ├── main.tsx
+│ │ └── vite-env.d.ts
+│ ├── index.html
+│ ├── tsconfig.json
+│ └── package.json
 ├── data/
-│   └── nursery.db                    # Shared SQLite database
+│ └── nursery.db # Shared SQLite database
 └── Nursery.sln
 ```
-
 ## Features
 
 - User registration with SHA-256 password hashing
@@ -71,13 +81,16 @@ VirtualNursery/
 - Duplicate plant detection — stops immediately if a plant is already in your nursery; reuses existing catalog data if another user registered it first
 - Console client routes all plant operations through the REST API — `Nursery.Api` is the single point of access to the database
 - Input validation on plant type and life cycle — reprompts on invalid input instead of crashing
-- React + TypeScript frontend displays the full plant catalog fetched live from the API
+- React + TypeScript frontend with full CRUD — browse the catalog, view plant details, create new plants, edit existing plants, and delete plants from the catalog
+- URL routing — each plant has its own page at `/plant/{plantId}`
+- Live search on the home page — filters the plant catalog by name as you type
 
 ## Database Schema
 
 Three normalised tables stored in a single shared `nursery.db` file:
 
-```sql
+```
+sql
 Users      (UserID PK, Username UNIQUE, PasswordHash, Role)
 Plant      (PlantID PK, Name UNIQUE, Type, LifeCycle, FloweringStatus)
 UserNursery(UserID FK, PlantID FK)  -- composite PK
@@ -87,13 +100,18 @@ UserNursery(UserID FK, PlantID FK)  -- composite PK
 
 ## API Endpoints
 
-| Method | Route | Description | Status |
-|--------|-------|-------------|--------|
-| `GET` | `/api/plants` | Retrieve the full plant catalog | `200 OK` |
-| `GET` | `/api/plants/{name}` | Retrieve a specific plant by name | `200 OK` |
-| `GET` | `/api/plants/nursery/{userId}` | Retrieve all plants for a user | `200 OK` |
-| `POST` | `/api/plants/nursery/{userId}` | Add a plant to a user's nursery | `201 Created` |
-| `DELETE` | `/api/plants/nursery/{userId}/{plantName}` | Remove a plant from a user's nursery | `204 No Content` |
+| Method | Route | Description |
+|--------|-------|-------------|
+| `GET` | `/api/plants` | Retrieve the full plant catalog |
+| `GET` | `/api/plants/name/{name}` | Retrieve a specific plant by name |
+| `GET` | `/api/plants/id/{plantId}` | Retrieve a specific plant by ID |
+| `GET` | `/api/plants/nursery/{userId}` | Retrieve all plants for a user |
+| `POST` | `/api/plants` | Create a new plant in the catalog |
+| `POST` | `/api/plants/nursery/{userId}` | Add a plant to a user's nursery |
+| `PUT` | `/api/plants/id/{plantId}` | Update a plant's details |
+| `DELETE` | `/api/plants/id/{plantId}` | Delete a plant from the catalog |
+| `DELETE` | `/api/plants/nursery/{userId}/{plantName}` | Remove a plant from a user's nursery |
+| `GET` | `/api/options` | Retrieve available plant type and life cycle options |
 
 ## Getting Started
 
@@ -141,13 +159,29 @@ The frontend is available at `http://localhost:5173`.
 # Get the full plant catalog
 curl https://localhost:7288/api/plants
 
+# Get a specific plant by ID
+curl https://localhost:7288/api/plants/id/1
+
 # Get all plants for a user
 curl https://localhost:7288/api/plants/nursery/{userId}
+
+# Create a new plant
+curl -X POST https://localhost:7288/api/plants \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Monstera", "type": "Shrub", "lifeCycle": "Perennial", "floweringStatus": false}'
 
 # Add a plant to a user's nursery
 curl -X POST https://localhost:7288/api/plants/nursery/{userId} \
   -H "Content-Type: application/json" \
   -d '{"name": "Monstera", "type": "Shrub", "lifeCycle": "Perennial", "floweringStatus": false}'
+
+# Update a plant
+curl -X PUT https://localhost:7288/api/plants/id/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Monstera", "type": "Herb", "lifeCycle": "Annual", "floweringStatus": true}'
+
+# Delete a plant from the catalog
+curl -X DELETE https://localhost:7288/api/plants/id/1
 
 # Remove a plant from a user's nursery
 curl -X DELETE https://localhost:7288/api/plants/nursery/{userId}/Monstera
@@ -158,8 +192,10 @@ curl -X DELETE https://localhost:7288/api/plants/nursery/{userId}/Monstera
 - [x] SQLite database with normalised schema
 - [x] Console client backed by REST API
 - [x] CRUD-complete plant endpoints
-- [x] React + TypeScript frontend displaying the plant catalog
-- [ ] Plant detail page with URL routing (`/plants/:name`)
+- [x] React + TypeScript frontend with full CRUD
+- [x] Plant detail page with URL routing (`/plant/:plantId`)
+- [x] Live search on home page
+- [ ] xUnit test suite
 - [ ] Responsive CSS for mobile and smaller screens
 - [ ] Per-user nursery view in the React frontend
 - [ ] JWT authentication
